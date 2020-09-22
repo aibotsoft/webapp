@@ -7,12 +7,16 @@ import (
 
 func handlerFunc(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "text/html")
-	_, _ = fmt.Fprint(w, r.URL.Path)
+	//_, _ = fmt.Fprint(w, r.URL.Path)
 	fmt.Println(r.URL)
 	if r.URL.Path == "/" {
 		_, _ = fmt.Fprint(w, "<h1>Welcome to my awesome site change!</h1>")
 	} else if r.URL.Path == "/fuck" {
 		_, _ = fmt.Fprint(w, "<h1>Fuck off</h1>")
+	} else {
+		fmt.Println("hello")
+		w.WriteHeader(http.StatusNotFound)
+		_, _ = fmt.Fprint(w, "<h1>I do not have that page</h1>")
 	}
 
 }
