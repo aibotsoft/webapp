@@ -9,6 +9,7 @@ import (
 )
 
 var homeTemplate *template.Template
+var contactTemplate *template.Template
 
 func home(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "text/html")
@@ -17,11 +18,14 @@ func home(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-
 }
 func contact(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "text/html")
-	_, _ = fmt.Fprint(w, "<h1>Contact page</h1>")
+	//_, _ = fmt.Fprint(w, "<h1>Contact page</h1>")
+	err := contactTemplate.Execute(w, nil)
+	if err != nil {
+		panic(err)
+	}
 }
 func faq(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "text/html")
@@ -36,6 +40,10 @@ func notFound(w http.ResponseWriter, r *http.Request) {
 func main() {
 	var err error
 	homeTemplate, err = template.ParseFiles("views/home.gohtml")
+	if err != nil {
+		panic(err)
+	}
+	contactTemplate, err = template.ParseFiles("views/contact.gohtml")
 	if err != nil {
 		panic(err)
 	}
