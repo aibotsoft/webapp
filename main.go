@@ -5,6 +5,9 @@ import (
 	"net/http"
 )
 
+func faviconHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("favicon requested")
+}
 func handlerFunc(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "text/html")
 	//_, _ = fmt.Fprint(w, r.URL.Path)
@@ -14,16 +17,17 @@ func handlerFunc(w http.ResponseWriter, r *http.Request) {
 	} else if r.URL.Path == "/fuck" {
 		_, _ = fmt.Fprint(w, "<h1>Fuck off</h1>")
 	} else {
-		fmt.Println("hello")
 		w.WriteHeader(http.StatusNotFound)
 		_, _ = fmt.Fprint(w, "<h1>I do not have that page</h1>")
 	}
-
 }
+
 func main() {
-	http.HandleFunc("/", handlerFunc)
-	fmt.Printf("http://localhost:3000")
-	err := http.ListenAndServe(":3000", nil)
+	mux := &http.ServeMux{}
+	//mux.HandleFunc("/", handlerFunc)
+	mux.HandleFunc("/favicon", faviconHandler)
+	//fmt.Printf("http://localhost:3000")
+	err := http.ListenAndServe(":3000", mux)
 	if err != nil {
 		fmt.Print(err)
 	}
