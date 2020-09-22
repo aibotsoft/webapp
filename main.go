@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/julienschmidt/httprouter"
+	"log"
 	"net/http"
 )
 
@@ -22,13 +24,21 @@ func handlerFunc(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	fmt.Fprint(w, "Welcome!\n")
+}
+
+func Hello(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	fmt.Fprintf(w, "hello, %s!\n", ps.ByName("name"))
+}
+
 func main() {
-	mux := &http.ServeMux{}
+	//mux := &http.ServeMux{}
+	router := httprouter.New()
+	//router.GET("/", handlerFunc)
+	router.GET("/", Index)
+	router.GET("/hello/:name", Hello)
 	//mux.HandleFunc("/", handlerFunc)
-	mux.HandleFunc("/favicon", faviconHandler)
 	//fmt.Printf("http://localhost:3000")
-	err := http.ListenAndServe(":3000", mux)
-	if err != nil {
-		fmt.Print(err)
-	}
+	log.Fatal(http.ListenAndServe(":3000", router))
 }
