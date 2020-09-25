@@ -13,10 +13,7 @@ var contactView *views.View
 
 func home(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "text/html")
-	err := homeView.Render(w, nil)
-	if err != nil {
-		panic(err)
-	}
+	must(homeView.Render(w, nil))
 }
 func contact(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "text/html")
