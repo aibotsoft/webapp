@@ -13,16 +13,14 @@ var contactView *views.View
 
 func home(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "text/html")
-	//_, _ = fmt.Fprint(w, "<h1>Home page!</h1>")
-	err := homeView.Template.Execute(w, nil)
+	err := homeView.Template.ExecuteTemplate(w, homeView.Layout, nil)
 	if err != nil {
 		panic(err)
 	}
 }
 func contact(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "text/html")
-	//_, _ = fmt.Fprint(w, "<h1>Contact page</h1>")
-	err := contactView.Template.Execute(w, nil)
+	err := contactView.Template.ExecuteTemplate(w, contactView.Layout, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -38,8 +36,8 @@ func notFound(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	homeView = views.NewView("views/home.gohtml")
-	contactView = views.NewView("views/contact.gohtml")
+	homeView = views.NewView("bootstrap", "views/home.gohtml")
+	contactView = views.NewView("bootstrap", "views/contact.gohtml")
 
 	//fmt.Printf("http://localhost:3000")
 	r := mux.NewRouter()
